@@ -6,15 +6,22 @@ import {carService} from "../../services/carService";
 
 const CarContainer = () => {
     const [cars, setCars] = useState<ICar[]>([])
+    const [trigger, setTrigger] = useState<boolean>(null)
+    const [carForUpdate, setCarForUpdate] = useState<ICar>(null)
 
     useEffect(() => {
         carService.getAll().then(({data})=>setCars(data))
-    }, []);
+    }, [trigger]);
+
+    const changeTrigger = () =>{
+        setTrigger(prevState => !prevState)
+    }
+
     return (
         <div>
-            <CarForm/>
+            <CarForm changeTrigger={changeTrigger} setCarForUpdate={setCarForUpdate} carForUpdate={carForUpdate}/>
             <hr/>
-            <Cars  cars={cars}/>
+            <Cars  cars={cars} setCarForUpdate={setCarForUpdate} changeTrigger={changeTrigger}/>
         </div>
     );
 };
